@@ -10,4 +10,5 @@ public class WhereismyvacationApplication {
 		SpringApplication.run(WhereismyvacationApplication.class, args);
 	}
 
+	// TODO: filters, interceptors, utils, exceptions 패키지 만들어서 구성하기
 }
