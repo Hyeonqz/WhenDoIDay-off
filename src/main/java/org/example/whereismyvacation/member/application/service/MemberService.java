@@ -28,7 +28,6 @@ public class MemberService {
 	private final VacationRepository vacationRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	// 담배 피고 와서 디버그 찍어보기.
 	@Transactional
 	public MemberResResponse registerMember(MemberReqRegister memberReqRegister) {
 		// 더티 체킹 때문에 로그인 객체가 먼저 save
