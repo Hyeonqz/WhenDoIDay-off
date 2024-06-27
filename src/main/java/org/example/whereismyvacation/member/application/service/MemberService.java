@@ -11,11 +11,14 @@ import org.example.whereismyvacation.member.repository.MemberRepository;
 import org.example.whereismyvacation.vacation.application.dto.req.VacationDto;
 import org.example.whereismyvacation.vacation.domain.Vacation;
 import org.example.whereismyvacation.vacation.repository.VacationRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -23,6 +26,7 @@ public class MemberService {
 	private final MemberRepository memberRepository;
 	private final LoginRepository loginRepository;
 	private final VacationRepository vacationRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	@Transactional
 	public MemberResResponse registerMember(MemberReqRegister memberReqRegister) {
@@ -31,6 +35,8 @@ public class MemberService {
 		memberRepository.save(member);
 
 		Login login = memberReqRegister.getLogin();
+		login.hashPassword(passwordEncoder);
+		log.info("[login.associateMember] : {}", member);
 		login.registerDate();
 		login.associateMember(member);
 		loginRepository.save(login);

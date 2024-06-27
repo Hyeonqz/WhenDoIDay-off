@@ -1,34 +1,49 @@
 package org.example.whereismyvacation.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 public class SpringSecurityConfig {
 
-	// 일단 다 허용시키고 나중에 수정하기
-/*	@Bean
-	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	@Bean
+	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			.csrf(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests()
-			.anyRequest()
+			.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
+				.requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher("/api/**")).permitAll()
+				.requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+			)
+			.csrf(csrf -> csrf
+				.ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
+				.ignoringRequestMatchers(new AntPathRequestMatcher("/api/**"))
+			)
+			.headers(headers -> headers
+				.addHeaderWriter(new XFrameOptionsHeaderWriter(
+					XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN))
+			)
+			.formLogin(formLogin -> formLogin
+				.loginPage("/user/login")
+				.defaultSuccessUrl("/")
+			)
+			.logout(logout -> logout
+				.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
+				.logoutSuccessUrl("/")
+				.invalidateHttpSession(true)
+			);
 
-
-		;
 		return http.build();
-	}*/
+	}
 
-/*	@Bean
-	public UserDetailsService userDetailsService(UserDetails userDetails) {
-		UserDetails user = User.withUserDetails(userDetails)
-			.username("user")
-			.password("password")
-			.roles("USER")
-			.build();
-		return new InMemoryUserDetailsManager(user);
-	}*/
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 }

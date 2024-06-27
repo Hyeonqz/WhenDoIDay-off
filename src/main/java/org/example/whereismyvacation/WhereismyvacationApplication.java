@@ -11,4 +11,5 @@ public class WhereismyvacationApplication {
 	}
 
 	// TODO: filters, interceptors, utils, exceptions 패키지 만들어서 구성하기
+	// TODO: 오늘 JWT + SpringSecurity 로그인 로직 만들기.
 }

@@ -14,7 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@RequestMapping("/v1/member")
+@RequestMapping("/api/v1")
 @RestController
 public class MemberController {
 	private final MemberService memberService;
