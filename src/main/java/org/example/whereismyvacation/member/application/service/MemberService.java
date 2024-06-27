@@ -28,18 +28,19 @@ public class MemberService {
 	private final VacationRepository vacationRepository;
 	private final PasswordEncoder passwordEncoder;
 
+	// 담배 피고 와서 디버그 찍어보기.
 	@Transactional
 	public MemberResResponse registerMember(MemberReqRegister memberReqRegister) {
+		// 더티 체킹 때문에 로그인 객체가 먼저 save
+		Login login = memberReqRegister.getLogin();
+		login.registerDate();
+		login.hashPassword(passwordEncoder);
+		log.info("[Password : {}", login.getPassword());
+		loginRepository.save(login);
+
 		Member member = MemberReqRegister.toEntity(memberReqRegister);
 		member.registerDate();
 		memberRepository.save(member);
-
-		Login login = memberReqRegister.getLogin();
-		login.hashPassword(passwordEncoder);
-		log.info("[login.associateMember] : {}", member);
-		login.registerDate();
-		login.associateMember(member);
-		loginRepository.save(login);
 
 		Vacation vacation = VacationDto.toEntity(memberReqRegister.getVacation());
 		vacationRepository.save(vacation);
