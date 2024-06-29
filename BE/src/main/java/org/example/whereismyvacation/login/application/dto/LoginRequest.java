@@ -26,7 +26,7 @@ public class LoginRequest {
 
 	public static Login toEntity(LoginRequest loginRequest) {
 		return Login.builder()
-			.login(loginRequest.getLoginId())
+			.loginId(loginRequest.getLoginId())
 			.password(loginRequest.getPassword())
 			.build();
 	}
