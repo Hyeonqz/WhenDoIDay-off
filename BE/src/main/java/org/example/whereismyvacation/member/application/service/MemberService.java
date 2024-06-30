@@ -35,7 +35,7 @@ public class MemberService {
 		Login login = LoginRequest.toEntity(memberRegisterRegister.getLogin());
 		login.registerDate(); // 필드 상태가 변경됨 -> 더티체킹 나올만함.
 		login.hashPassword(passwordEncoder);
-		log.info("[Password : {}", login.getPassword());
+		log.info("[Password : {}]", login.getPassword());
 
 		Member member = MemberRegisterRegister.toEntity(memberRegisterRegister);
 		member.registerDate();
